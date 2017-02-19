@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Rep
         if(!TextUtils.isEmpty(user.getEmail()))
             mail.setText(user.getEmail());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton sync = (FloatingActionButton) findViewById(R.id.sync);
+        sync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, getString(R.string.action_sync_repos), Snackbar.LENGTH_LONG).show();
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Rep
 
     /**  API fetch all repositories for the user**/
     public void fetchRepositories(){
-        GitApiService service = GitApplication.getRetrofit().create(GitApiService.class);
+        GitApiService service = GitApplication.getInstance().getRetrofit().create(GitApiService.class);
         Call<List<Repository>> call = service.getRepositories();
         call.enqueue(this);
     }
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Rep
 
     /** Logout the user and redirect to the login screen**/
     public void logoutUser(View v){
-        GitApplication.logout(this);
+        GitApplication.getInstance().logout();
         startActivity(new Intent(this, AuthActivity.class));
         finish();
     }

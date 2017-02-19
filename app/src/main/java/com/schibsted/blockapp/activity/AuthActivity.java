@@ -50,7 +50,7 @@ public class AuthActivity extends AppCompatActivity implements Callback<AuthToke
         mPrivateAccess = (CheckBox)findViewById(R.id.access_private);
         form = findViewById(R.id.login_form);
         progress = findViewById(R.id.login_progress);
-        String token = LocalCache.getInstance().getToken(this);
+        String token = GitApplication.getInstance().getToken();
         if(TextUtils.isEmpty(token))
             showAuthForm(true);
         else
@@ -87,7 +87,7 @@ public class AuthActivity extends AppCompatActivity implements Callback<AuthToke
 
     /**  API user authentication and acquire the associated authorization token **/
     private void authenticateUser(String basicAuth){
-        GitApiService service = GitApplication.setupRetrofit(basicAuth).create(GitApiService.class);
+        GitApiService service = GitApplication.getInstance().setupRetrofit(basicAuth).create(GitApiService.class);
         AuthQuery query = new AuthQuery(Global.APP_KEY,Global.APP_SECRET);
         if(mPrivateAccess.isChecked())
             query.addScope(Global.SCOPE_ALL_REPO);
@@ -99,7 +99,7 @@ public class AuthActivity extends AppCompatActivity implements Callback<AuthToke
 
     /**  API user account information  **/
     private void loadUserAccount(){
-        GitApiService service = GitApplication.getRetrofit().create(GitApiService.class);
+        GitApiService service = GitApplication.getInstance().getRetrofit().create(GitApiService.class);
         Call<User> call = service.getUser();
         call.enqueue(new Callback<User>() {
             @Override
@@ -116,7 +116,7 @@ public class AuthActivity extends AppCompatActivity implements Callback<AuthToke
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 Dialog.showAlert(AuthActivity.this, getString(R.string.error_connection));
-                GitApplication.logout(getBaseContext());
+                GitApplication.getInstance().logout();
                 showAuthForm(true);
             }
         });
@@ -128,8 +128,8 @@ public class AuthActivity extends AppCompatActivity implements Callback<AuthToke
         Log.i(TAG, "SUCCESS: "+ response.code());
         AuthToken authToken = response.body();
         if(authToken!=null) { // Store token and attempt to fetch user account info
-            LocalCache.getInstance().setToken(this, authToken.getToken());
-            GitApplication.setupRetrofit("token "+authToken.getToken());
+            GitApplication.getInstance().setToken(authToken.getToken());
+            GitApplication.getInstance().setupRetrofit("token "+authToken.getToken());
             loadUserAccount();
         }else {  // failed to acquire the authorization token
             showAuthForm(true);

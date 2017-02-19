@@ -1,4 +1,4 @@
-**BlockApp**
+**GitApp**
 
 Krav:
 - Android Studio

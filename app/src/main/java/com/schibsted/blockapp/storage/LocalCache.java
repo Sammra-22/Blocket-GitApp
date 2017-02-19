@@ -20,12 +20,12 @@ public class LocalCache {
         return mInstance;
     }
 
-    public String getToken(Context context){
-        return context.getSharedPreferences(PREF_ACCOUNT, 0).getString(ACCOUNT_TOKEN, null);
+    public String get(Context context, String key){
+        return context.getSharedPreferences(PREF_ACCOUNT, 0).getString(key, null);
     }
 
-    public void setToken(Context context, String token){
-        context.getSharedPreferences(PREF_ACCOUNT, 0).edit().putString(ACCOUNT_TOKEN, token).commit();
+    public void set(Context context, String key, String value){
+        context.getSharedPreferences(PREF_ACCOUNT, 0).edit().putString(key, value).commit();
     }
 
     public void clearAccount(Context context){

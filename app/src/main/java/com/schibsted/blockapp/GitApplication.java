@@ -10,6 +10,8 @@ import com.schibsted.blockapp.storage.LocalCache;
 import com.schibsted.blockapp.utils.Global;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -18,37 +20,71 @@ import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.schibsted.blockapp.utils.Global.ACCOUNT_TOKEN;
+
 /**
  * Created by Sam on 2/18/17.
  * Application class for global settings
  */
 public class GitApplication extends Application {
 
-    static Retrofit retrofit;
+    Retrofit retrofit;
+    Map<String, String> headers= new HashMap<>();
+    Context context;
+    static GitApplication mInstance;
+
+    public GitApplication() {
+        super();
+        mInstance = this;
+    }
+
+    public GitApplication(Context context) {
+        mInstance = this;
+        mInstance.context = context;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        context = getApplicationContext();
         // Setup a Retrofit if a token is available
-        String token = LocalCache.getInstance().getToken(this);
+        String token = getToken();
         if(!TextUtils.isEmpty(token))
             setupRetrofit("token "+token);
     }
 
-    public static void logout(Context context){
+    public static GitApplication getInstance() {
+        return mInstance;
+    }
+
+    void setHeaders(String authentication){
+        headers.put(Global.HEADER_AUTH, authentication);
+        headers.put(Global.HEADER_USER_AGENT, "BlocketGitApp");
+    }
+
+    public String getToken(){
+        return LocalCache.getInstance().get(context, ACCOUNT_TOKEN);
+    }
+
+    public void setToken(String token){
+        LocalCache.getInstance().set(context, ACCOUNT_TOKEN, token);
+    }
+
+    public void logout(){
         LocalCache.getInstance().clearAccount(context);
     }
 
-    public static Retrofit setupRetrofit(final String authentication){
+    public Retrofit setupRetrofit(final String authentication){
+        setHeaders(authentication);
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
         clientBuilder.addInterceptor(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
-                Request newRequest = chain.request().newBuilder()
-                        .addHeader(Global.HEADER_AUTH, authentication)
-                        .addHeader(Global.HEADER_USER_AGENT, "BlocketGitApp")
-                        .build();
-                return chain.proceed(newRequest);
+                Request.Builder reqBuilder = chain.request().newBuilder();
+                for(String key:headers.keySet())
+                    reqBuilder.addHeader(key, headers.get(key));
+                return chain.proceed(reqBuilder.build());
             }
         });
         clientBuilder.followRedirects(true);
@@ -60,7 +96,11 @@ public class GitApplication extends Application {
         return retrofit;
     }
 
-    public static Retrofit getRetrofit() {
+    public Retrofit getRetrofit() {
         return retrofit;
+    }
+
+    Map<String, String> getHeaders() {
+        return headers;
     }
 }

@@ -31,7 +31,7 @@ public class RepoClickListener implements View.OnClickListener, Callback<Reposit
     @Override
     public void onClick(View view) {
         Dialog.showProgress(context, context.getString(R.string.progress_details));
-        GitApiService service = GitApplication.getRetrofit().create(GitApiService.class);
+        GitApiService service = GitApplication.getInstance().getRetrofit().create(GitApiService.class);
         String[] nameParts = repository.getFullName().split("/");
         String owner = nameParts[0];
         String name = nameParts[1];
@@ -47,7 +47,7 @@ public class RepoClickListener implements View.OnClickListener, Callback<Reposit
             Dialog.showListDialog(context, response.body().getName(), response.body().getDetails());
         else{
             if(response.code()==401 || response.code()==403)
-                GitApplication.logout(context); // Access problem - Logout
+                GitApplication.getInstance().logout(); // Access problem - Logout
             Dialog.showAlert(context, context.getString(R.string.error_unknown));
         }
     }

@@ -15,7 +15,6 @@ public class Global {
     /**  The 40 character OAuth app client secret for which to create the token. **/
     public static final String APP_SECRET = "5014c932c9f5be38817af9965c149c8159394cf8";
 
-
     public static final String SCOPE_ALL_REPO = "repo";
     public static final String SCOPE_PUBLIC_REPO = "public_repo";
 

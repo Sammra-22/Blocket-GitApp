@@ -109,7 +109,9 @@ public class AuthActivity extends AppCompatActivity implements Callback<AuthToke
                     intent.putExtra(INTENT_EXTRA_USER, new Gson().toJson(response.body()));
                     startActivity(intent);
                     finish();
-                }else
+                }else if(response.code()==401 || response.code()==403)
+                    showAuthForm(true); // Revoked or expired Token
+                else
                     Dialog.showAlert(AuthActivity.this, getString(R.string.error_unknown));
             }
 

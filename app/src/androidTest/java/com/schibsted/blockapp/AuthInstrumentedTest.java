@@ -38,7 +38,7 @@ import static org.junit.Assert.*;
 public class AuthInstrumentedTest {
 
     @Rule
-    public ActivityTestRule<AuthActivity> mActivityRule = new ActivityTestRule<>(
+    public ActivityTestRule<AuthActivity> mActivityAuthRule = new ActivityTestRule<>(
             AuthActivity.class, true, false);
 
 
@@ -56,7 +56,7 @@ public class AuthInstrumentedTest {
 
     @Test
     public void authenticationMissing() throws Exception {
-        mActivityRule.launchActivity(new Intent());
+        mActivityAuthRule.launchActivity(new Intent());
         onView(isRoot()).perform(waitFor(3000));
         onView(withId(R.id.username)).perform(typeText("name"), ViewActions.closeSoftKeyboard());
         onView(withId(R.id.sign_in_button)).perform(click());
@@ -68,7 +68,7 @@ public class AuthInstrumentedTest {
 
     @Test
     public void authenticationFailure() throws Exception {
-        mActivityRule.launchActivity(new Intent());
+        mActivityAuthRule.launchActivity(new Intent());
         onView(isRoot()).perform(waitFor(3000));
         onView(withId(R.id.username)).perform(typeText("name"), ViewActions.closeSoftKeyboard());
         onView(withId(R.id.password)).perform(typeText("pass"), ViewActions.closeSoftKeyboard());

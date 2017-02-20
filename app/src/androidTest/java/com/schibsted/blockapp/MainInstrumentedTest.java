@@ -32,8 +32,10 @@ import static org.junit.Assert.assertNull;
 @RunWith(AndroidJUnit4.class)
 public class MainInstrumentedTest {
 
+    final String BASIC_AUTH_TEST = "Basic c2FtbXJhMjI6ZGVmamFtMjI=";
+
     @Rule
-    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<MainActivity>(
+    public ActivityTestRule<MainActivity> mActivityMainRule = new ActivityTestRule<MainActivity>(
             MainActivity.class, true, false);
 
 
@@ -42,8 +44,7 @@ public class MainInstrumentedTest {
     @Before
     public void setup() throws Exception {
         GitApplication app = GitApplication.getInstance();
-        app.setToken("157425084c2bcf80f09bba8ac5fff01c3816af8a");
-        app.setupRetrofit("token "+app.getToken());
+        app.setupRetrofit(BASIC_AUTH_TEST);
         launchIntent = new Intent();
         launchIntent.putExtra(INTENT_EXTRA_USER, new Gson().toJson(new User("test","test@test")));
     }
@@ -51,7 +52,7 @@ public class MainInstrumentedTest {
 
     @Test
     public void userAccount() throws Exception {
-        mActivityRule.launchActivity(launchIntent);
+        mActivityMainRule.launchActivity(launchIntent);
         onView(isRoot()).perform(waitFor(3000));
         onView(withId(R.id.name)).check(matches(withText("test")));
         onView(withId(R.id.mail)).check(matches(withText("test@test")));
@@ -64,7 +65,7 @@ public class MainInstrumentedTest {
 
     @Test
     public void sync() throws Exception {
-        mActivityRule.launchActivity(launchIntent);
+        mActivityMainRule.launchActivity(launchIntent);
         onView(withId(R.id.sync)).perform(click());
         onView(withText(R.string.action_sync_repos)).check(matches(isDisplayed()));
     }
@@ -72,7 +73,7 @@ public class MainInstrumentedTest {
 
     @Test
     public void logout() throws Exception {
-        mActivityRule.launchActivity(launchIntent);
+        mActivityMainRule.launchActivity(launchIntent);
         onView(withId(R.id.logout)).perform(click());
         onView(withId(R.id.login_form)).check(matches(isDisplayed()));
         assertNull(GitApplication.getInstance().getToken());

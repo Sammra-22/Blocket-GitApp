@@ -27,6 +27,7 @@ public class Global {
      **/
     public static final String PREF_ACCOUNT = "Account";
     public static final String ACCOUNT_TOKEN = "Token";
+    public static final String ACCOUNT_BASIC_CREDENTIALS = "BasicCredentials";
 
     /**
      * Intents

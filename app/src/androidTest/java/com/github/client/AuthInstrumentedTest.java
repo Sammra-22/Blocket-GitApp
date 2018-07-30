@@ -10,7 +10,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
 
-import com.github.client.activity.AuthActivity;
+import com.github.client.authentication.AuthActivity;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;

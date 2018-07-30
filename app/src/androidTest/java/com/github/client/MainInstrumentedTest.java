@@ -5,8 +5,8 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.google.gson.Gson;
-import com.github.client.activity.MainActivity;
-import com.github.client.model.User;
+import com.github.client.account.AccountActivity;
+import com.github.client.api.model.User;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -35,8 +35,8 @@ public class MainInstrumentedTest {
     final String BASIC_AUTH_TEST = "Basic c2FtbXJhMjI6ZGVmamFtMjI=";
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityMainRule = new ActivityTestRule<MainActivity>(
-            MainActivity.class, true, false);
+    public ActivityTestRule<AccountActivity> mActivityMainRule = new ActivityTestRule<AccountActivity>(
+            AccountActivity.class, true, false);
 
 
     Intent launchIntent;

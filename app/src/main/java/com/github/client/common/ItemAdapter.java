@@ -1,4 +1,4 @@
-package com.github.client.adapter;
+package com.github.client.common;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.github.client.R;
-import com.github.client.model.ItemDetail;
+import com.github.client.api.model.ItemDetail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,16 +20,17 @@ import java.util.List;
  */
 public class ItemAdapter extends ArrayAdapter<ItemDetail> {
 
-    Context context;
-    List<ItemDetail> items;
+    private Context context;
+    private List<ItemDetail> items;
 
     public ItemAdapter(Context context, List<ItemDetail> objects) {
         super(context, R.layout.dialog_row, objects);
         this.context = context;
         this.items = new ArrayList<>();
-        for(ItemDetail item:objects) {
-            if(!item.isEmpty()) // Keep only the available values
+        for (ItemDetail item : objects) {
+            if (!item.isEmpty()) { // Keep only the available values
                 this.items.add(item);
+            }
         }
     }
 
@@ -37,18 +38,17 @@ public class ItemAdapter extends ArrayAdapter<ItemDetail> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        ViewHolder holder = null;
+        ViewHolder holder;
 
-        if(row == null) {
+        if (row == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
             row = inflater.inflate(R.layout.dialog_row, parent, false);
             holder = new ViewHolder();
-            holder.textViewLabel = (TextView)row.findViewById(R.id.label);
-            holder.textViewValue = (TextView)row.findViewById(R.id.value);
+            holder.textViewLabel = (TextView) row.findViewById(R.id.label);
+            holder.textViewValue = (TextView) row.findViewById(R.id.value);
             row.setTag(holder);
-        }
-        else {
-            holder = (ViewHolder)row.getTag();
+        } else {
+            holder = (ViewHolder) row.getTag();
         }
 
         holder.textViewLabel.setText(items.get(position).getLabel());
@@ -64,6 +64,5 @@ public class ItemAdapter extends ArrayAdapter<ItemDetail> {
     static class ViewHolder {
         TextView textViewLabel;
         TextView textViewValue;
-
     }
 }

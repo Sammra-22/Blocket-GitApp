@@ -1,4 +1,4 @@
-package com.github.client.model;
+package com.github.client.api.model;
 
 import android.text.TextUtils;
 
@@ -7,10 +7,10 @@ import android.text.TextUtils;
  */
 public class ItemDetail {
 
-    String label;
-    String value;
+    private String label;
+    private String value;
 
-    public ItemDetail(String label, String value){
+    ItemDetail(String label, String value) {
         this.label = label;
         this.value = value;
     }
@@ -23,7 +23,7 @@ public class ItemDetail {
         return value;
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return TextUtils.isEmpty(value);
     }
 }

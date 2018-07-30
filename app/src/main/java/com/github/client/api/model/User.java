@@ -1,4 +1,4 @@
-package com.github.client.model;
+package com.github.client.api.model;
 
 
 /**
@@ -6,10 +6,10 @@ package com.github.client.model;
  */
 public class User {
 
-    long id;
-    String name;
-    String company;
-    String email;
+    private long id;
+    private String name;
+    private String company;
+    private String email;
 
     public User(String name, String email) {
         this.name = name;

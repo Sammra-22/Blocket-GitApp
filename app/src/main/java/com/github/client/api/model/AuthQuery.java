@@ -1,4 +1,4 @@
-package com.github.client.model;
+package com.github.client.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -11,17 +11,14 @@ import java.util.List;
  */
 public class AuthQuery {
 
-    List<String> scopes;
-
+    private List<String> scopes;
     @SerializedName("client_id")
-    String clientId;
-
+    private String clientId;
     @SerializedName("client_secret")
-    String clientSecret;
+    private String clientSecret;
+    private String note;
 
-    String note;
-
-    public AuthQuery(String clientId, String clientSecret){
+    public AuthQuery(String clientId, String clientSecret) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.note = "GitApp Auth";
@@ -44,7 +41,7 @@ public class AuthQuery {
         return note;
     }
 
-    public void addScope(String scope){
+    public void addScope(String scope) {
         scopes.add(scope);
     }
 

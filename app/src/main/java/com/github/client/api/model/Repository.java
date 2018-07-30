@@ -1,4 +1,4 @@
-package com.github.client.model;
+package com.github.client.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -12,38 +12,30 @@ import java.util.List;
 public class Repository {
 
     long id;
-
     String name;
-
     @SerializedName("full_name")
     String fullName;
-
     @SerializedName("private")
     boolean isPrivate;
-
     String description;
-
     @SerializedName("created_at")
     String createdAt;
-
     @SerializedName("updated_at")
     String updatedAt;
-
     @SerializedName("pushed_at")
     String pushedAt;
-
     @SerializedName("git_url")
     String gitUrl;
-
     @SerializedName("ssh_url")
     String sshUrl;
-
     @SerializedName("clone_url")
     String cloneUrl;
-
     String language;
-
     String size;
+
+    public Repository(String fullName){
+        this.fullName = fullName;
+    }
 
     public long getId() {
         return id;
@@ -97,16 +89,16 @@ public class Repository {
         return size;
     }
 
-    public List<ItemDetail> getDetails(){
+    public List<ItemDetail> getDetails() {
         List<ItemDetail> details = new ArrayList<>();
         details.add(new ItemDetail("ID: ", String.valueOf(id)));
-        details.add(new ItemDetail("Name: ",fullName));
-        details.add(new ItemDetail("Language: ",language));
-        details.add(new ItemDetail("Desc: ",description));
-        details.add(new ItemDetail("Access: ", ((isPrivate)?"Private":"Public")));
-        details.add(new ItemDetail("Created: ", createdAt.substring(0,10)));
-        details.add(new ItemDetail("Updated: ",  updatedAt.substring(0,10)));
-        details.add(new ItemDetail("Pushed: ", pushedAt.substring(0,10)));
+        details.add(new ItemDetail("Name: ", fullName));
+        details.add(new ItemDetail("Language: ", language));
+        details.add(new ItemDetail("Desc: ", description));
+        details.add(new ItemDetail("Access: ", ((isPrivate) ? "Private" : "Public")));
+        details.add(new ItemDetail("Created: ", createdAt.substring(0, 10)));
+        details.add(new ItemDetail("Updated: ", updatedAt.substring(0, 10)));
+        details.add(new ItemDetail("Pushed: ", pushedAt.substring(0, 10)));
         details.add(new ItemDetail("Git url: ", sshUrl));
         details.add(new ItemDetail("SSH url: ", sshUrl));
         details.add(new ItemDetail("Clone url: ", cloneUrl));

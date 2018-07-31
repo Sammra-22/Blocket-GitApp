@@ -20,6 +20,10 @@ public abstract class PresenterBase<View extends ViewBase> {
     }
 
     @CallSuper
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+    }
+
+    @CallSuper
     public void onStart() {
     }
 

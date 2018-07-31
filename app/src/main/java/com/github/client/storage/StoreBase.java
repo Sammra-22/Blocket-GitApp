@@ -8,7 +8,7 @@ import static com.github.client.utils.Global.PREF_ACCOUNT;
  * Created by Sam on 2/18/17.
  * Local storage to cache user/settings
  */
-abstract class LocalCache {
+abstract class StoreBase {
 
     String get(Context context, String key) {
         return context.getSharedPreferences(PREF_ACCOUNT, 0).getString(key, null);

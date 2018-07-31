@@ -23,12 +23,20 @@ public class HttpHeadersInterceptor implements Interceptor {
 
     @Override
     public Response intercept(@NonNull Chain chain) throws IOException {
+        String token = storage.fetchToken();
+        String basicAuth = storage.fetchBasicCredentials();
+
         Request.Builder reqBuilder = chain.request().newBuilder();
         reqBuilder.addHeader(Global.HEADER_USER_AGENT, HEADER_USER_AGENT_VALUE);
-        if (!TextUtils.isEmpty(storage.fetchToken())) {
-            reqBuilder.addHeader(Global.HEADER_AUTH, String.format("token %s", storage.fetchToken()));
-        } else if (!TextUtils.isEmpty(storage.fetchBasicCredentials())) {
-            reqBuilder.addHeader(Global.HEADER_AUTH, storage.fetchBasicCredentials());
+
+        if (!TextUtils.isEmpty(token)) {
+            reqBuilder.addHeader(Global.HEADER_AUTH, String.format("token %s", token));
+        } else if (!TextUtils.isEmpty(basicAuth)) {
+            reqBuilder.addHeader(Global.HEADER_AUTH, basicAuth);
+            String twoFactorAuth = storage.fetchTwoFactorAuth();
+            if (!TextUtils.isEmpty(twoFactorAuth)) {
+                reqBuilder.addHeader(Global.HEADER_TWO_FACTOR_AUTH, twoFactorAuth);
+            }
         }
         return chain.proceed(reqBuilder.build());
     }

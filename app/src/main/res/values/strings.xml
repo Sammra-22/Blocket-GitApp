@@ -6,16 +6,20 @@
     <!-- login -->
     <string name="intro_header">Welcome to GitApp!</string>
     <string name="intro_summary">Login to your GitHub Account</string>
+    <string name="two_factor_auth_summary">You are about to receive a two-factor authentication code via sms or another app.\n\nPlease enter the received code:</string>
     <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
+    <string name="prompt_code">Authentication code</string>
     <string name="grant_private">Grant access to private repositories</string>
     <string name="action_sign_in">Sign in</string>
+    <string name="action_submit">Submit</string>
 
     <!-- error -->
     <string name="error_invalid_auth_title">Authentication failed</string>
     <string name="error_unknown">Oops, an error has occurred. Try again later.</string>
     <string name="error_connection">Please check your Internet connection and try again.</string>
     <string name="error_missing_credentials">Username or password missing.</string>
+    <string name="error_missing_code">Two factor authentication code missing.</string>
     <string name="error_invalid_auth_body_1">Please make sure to enter valid credentials.</string>
     <string name="error_invalid_auth_body_2">Login attempts limit reached. The service is hence temporarily un-accessible, try again later.</string>
 
@@ -30,5 +34,5 @@
     <string name="action_sync_repos">Synchronizing Repositories</string>
     <string name="action_logout">Logout</string>
 
-    <string name="progress_details">Fetching details...</string>
+    <string name="progress_details">Fetching details…</string>
 </resources>

@@ -26,9 +26,9 @@ import static com.github.client.utils.Global.INTENT_EXTRA_USER;
 public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthView {
 
     InputMethodManager imm;
-    EditText mUsername, mPassword;
-    CheckBox mPrivateAccess;
-    View form, progress;
+    EditText usernameEditText, passwordEditText, codeEditText;
+    CheckBox privateAccessBox;
+    View signInForm, progress, codeForm;
 
     @Override
     protected AuthPresenter createPresenter() {
@@ -40,10 +40,12 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
         getSupportActionBar().hide();
-        mUsername = (EditText) findViewById(R.id.username);
-        mPassword = (EditText) findViewById(R.id.password);
-        mPrivateAccess = (CheckBox) findViewById(R.id.access_private);
-        form = findViewById(R.id.login_form);
+        usernameEditText = (EditText) findViewById(R.id.username);
+        passwordEditText = (EditText) findViewById(R.id.password);
+        privateAccessBox = (CheckBox) findViewById(R.id.access_private);
+        codeEditText = (EditText) findViewById(R.id.auth_code);
+        signInForm = findViewById(R.id.login_form);
+        codeForm = findViewById(R.id.two_factor_auth_form);
         progress = findViewById(R.id.login_progress);
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         checkHasToken();
@@ -54,7 +56,7 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
         if (!TextUtils.isEmpty(token)) {
             presenter.loadUserAccount();
         } else {
-            toggleSignInForm(true);
+            toggleView(Screen.SIGN_IN);
         }
     }
 
@@ -62,13 +64,20 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
      * Show/hide login display
      **/
     @Override
-    public void toggleSignInForm(boolean isVisible) {
-        if (isVisible) {
-            form.setVisibility(View.VISIBLE);
-            progress.setVisibility(View.GONE);
-        } else {
-            form.setVisibility(View.GONE);
-            progress.setVisibility(View.VISIBLE);
+    public void toggleView(Screen screen) {
+        signInForm.setVisibility(View.GONE);
+        progress.setVisibility(View.GONE);
+        codeForm.setVisibility(View.GONE);
+        switch (screen) {
+            case PROGRESS:
+                progress.setVisibility(View.VISIBLE);
+                break;
+            case SIGN_IN:
+                signInForm.setVisibility(View.VISIBLE);
+                break;
+            case TWO_FACTOR_AUTH:
+                codeForm.setVisibility(View.VISIBLE);
+                break;
         }
     }
 
@@ -77,13 +86,27 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
      **/
     public void signIn(View v) {
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-        String username = mUsername.getText().toString();
-        String password = mPassword.getText().toString();
+        String username = usernameEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
             DialogUtils.showAlert(this, getString(R.string.error_missing_credentials));
         } else {
-            toggleSignInForm(false);
-            presenter.authenticateUser(username, password, mPrivateAccess.isChecked());
+            toggleView(Screen.PROGRESS);
+            presenter.authenticateUser(username, password, privateAccessBox.isChecked());
+        }
+    }
+
+    /**
+     * Submit button action
+     **/
+    public void submit(View v) {
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        String code = codeEditText.getText().toString();
+        if (TextUtils.isEmpty(code)) {
+            DialogUtils.showAlert(this, getString(R.string.error_missing_code));
+        } else {
+            toggleView(Screen.PROGRESS);
+            presenter.authenticateUser(code, privateAccessBox.isChecked());
         }
     }
 

@@ -41,6 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            android:fontFamily="sans-serif-medium"
             android:text="@string/user_unknown"
             android:textColor="@color/colorPrimaryDark" />
 
@@ -55,9 +56,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
+            android:fontFamily="sans-serif-medium"
             android:text="@string/user_unknown"
             android:textColor="@color/colorPrimaryDark" />
-
 
         <TextView
             android:layout_width="wrap_content"
@@ -77,7 +78,9 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/repo_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/content_bg"
             android:scrollbars="vertical" />
 
     </LinearLayout>

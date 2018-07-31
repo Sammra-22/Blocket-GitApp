@@ -10,9 +10,13 @@ public interface Storage {
 
     String fetchBasicCredentials();
 
+    String fetchTwoFactorAuth();
+
     void storeToken(String token);
 
     void storeBasicCredentials(String credentials);
+
+    void store2faCode(String authCode);
 
     void clearAccount();
 }

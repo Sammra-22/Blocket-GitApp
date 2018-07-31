@@ -3,6 +3,9 @@ package com.github.client.api;
 import com.github.client.api.network.HttpHeadersInterceptor;
 import com.github.client.storage.Storage;
 import com.github.client.utils.Global;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -42,12 +45,13 @@ public class ApiManager {
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
                 .addInterceptor(new HttpHeadersInterceptor(storage))
                 .addNetworkInterceptor(loggingInterceptor)
+                .connectTimeout(3, TimeUnit.SECONDS)
                 .followRedirects(true);
         retrofit = new Retrofit.Builder()
                 .client(clientBuilder.build())
                 .baseUrl(Global.API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
         return retrofit;
     }

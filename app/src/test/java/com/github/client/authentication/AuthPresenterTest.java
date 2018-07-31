@@ -3,7 +3,7 @@ package com.github.client.authentication;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.TestUtils;
+import com.github.client.TestUtils;
 import com.github.client.api.AuthService;
 import com.github.client.api.model.AuthQuery;
 import com.github.client.api.model.AuthToken;
@@ -16,10 +16,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
+import io.reactivex.Single;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
-import rx.Single;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -57,23 +59,30 @@ public class AuthPresenterTest {
 
     @Before
     public void setup() {
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(__ -> Schedulers.trampoline());
         when(mockContext.getSharedPreferences(anyString(), anyInt())).thenReturn(mockSharedPrefs);
         presenter = spy(new AuthPresenter(mockView, mockAuthService, mockStorage));
     }
 
     @Test
     public void testAuthenticateUserFail() {
-        String mockBasicAuth = "mockedBasicAuth";
-        doReturn(mockBasicAuth).when(presenter)
-                .createBasicAuthCredentials(anyString(), anyString());
         when(mockAuthService.authenticate(any(AuthQuery.class))).
                 thenReturn(Single.just(TestUtils.mockServerError()));
 
-        presenter.authenticateUser("username", "password", true);
+        presenter.authenticateUser(true);
 
-        verify(mockStorage).storeBasicCredentials(mockBasicAuth);
-        verify(mockView).toggleSignInForm(true);
+        verify(mockView).toggleView(AuthView.Screen.SIGN_IN);
         verify(mockView).showAlertForResponseCode(any(ErrorCode.class));
+    }
+
+    @Test
+    public void testAuthenticateUser2fa() {
+        when(mockAuthService.authenticate(any(AuthQuery.class))).
+                thenReturn(Single.just(TestUtils.mockUnauthorizedError2fa()));
+
+        presenter.authenticateUser(true);
+
+        verify(mockView).toggleView(AuthView.Screen.TWO_FACTOR_AUTH);
     }
 
     @Test
@@ -111,7 +120,7 @@ public class AuthPresenterTest {
         presenter.loadUserAccount();
 
         verify(mockStorage).clearAccount();
-        verify(mockView).toggleSignInForm(true);
+        verify(mockView).toggleView(AuthView.Screen.SIGN_IN);
     }
 
     @Test

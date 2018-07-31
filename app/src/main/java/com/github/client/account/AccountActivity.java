@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -46,7 +47,7 @@ public class AccountActivity extends BaseActivity<AccountPresenter> implements A
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setIcon(R.drawable.git_icon);
 
@@ -57,8 +58,8 @@ public class AccountActivity extends BaseActivity<AccountPresenter> implements A
             String userExtra = getIntent().getExtras().getString(INTENT_EXTRA_USER);
             if (userExtra != null) {
                 User user = new Gson().fromJson(userExtra, User.class);
-                TextView name = (TextView) findViewById(R.id.name);
-                TextView mail = (TextView) findViewById(R.id.mail);
+                TextView name = findViewById(R.id.name);
+                TextView mail = findViewById(R.id.mail);
                 name.setText(user.getName());
                 mail.setText(user.getEmail());
             }
@@ -75,7 +76,7 @@ public class AccountActivity extends BaseActivity<AccountPresenter> implements A
     }
 
     private void setupRepositoryList() {
-        RecyclerView listView = (RecyclerView) findViewById(R.id.repo_list);
+        RecyclerView listView = findViewById(R.id.repo_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(listView.getContext(), layoutManager.getOrientation());
         listView.setLayoutManager(layoutManager);
@@ -85,12 +86,15 @@ public class AccountActivity extends BaseActivity<AccountPresenter> implements A
     }
 
     private void setupActionButtons() {
-        Button logoutBtn = (Button) findViewById(R.id.logout);
+        Button logoutBtn = findViewById(R.id.logout);
         logoutBtn.setOnClickListener(v -> presenter.logoutUser());
 
-        FloatingActionButton sync = (FloatingActionButton) findViewById(R.id.sync);
+        FloatingActionButton sync = findViewById(R.id.sync);
         sync.setOnClickListener(view -> {
             Snackbar.make(view, getString(R.string.action_sync_repos), Snackbar.LENGTH_LONG).show();
+            view.animate().rotationBy(720f)
+                    .setDuration(3000)
+                    .setInterpolator(new AccelerateDecelerateInterpolator());
             presenter.fetchRepositories();
         });
     }

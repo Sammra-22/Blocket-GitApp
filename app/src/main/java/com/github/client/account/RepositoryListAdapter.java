@@ -19,7 +19,6 @@ import java.util.List;
 public class RepositoryListAdapter extends RecyclerView.Adapter<RepositoryListAdapter.ViewHolder> {
 
     private List<Repository> repositoryList;
-
     private RepositoryActionListener repositoryListener;
 
     RepositoryListAdapter(RepositoryActionListener listener) {
@@ -40,11 +39,10 @@ public class RepositoryListAdapter extends RecyclerView.Adapter<RepositoryListAd
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Repository repo = repositoryList.get(position);
-        holder.mRepoName.setText(repo.getName());
-        holder.mRepoDesc.setText(repo.getDescription());
-        holder.mRepoDate.setText(repo.getCreatedAt().substring(0, 10));
-        holder.itemView.setOnClickListener(v ->
-                repositoryListener.onSelectRepository(repo));
+        holder.repoName.setText(repo.getName());
+        holder.repoDesc.setText(repo.getDescription());
+        holder.repoDate.setText(repo.getCreatedAt().substring(0, 10));
+        holder.itemView.setOnClickListener(v -> repositoryListener.onSelectRepository(repo));
     }
 
     @Override
@@ -56,14 +54,28 @@ public class RepositoryListAdapter extends RecyclerView.Adapter<RepositoryListAd
         void onSelectRepository(Repository repository);
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mRepoName, mRepoDesc, mRepoDate;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        TextView repoName, repoDesc, repoDate;
 
         ViewHolder(View v) {
             super(v);
-            mRepoName = (TextView) v.findViewById(R.id.repo_name);
-            mRepoDesc = (TextView) v.findViewById(R.id.repo_desc);
-            mRepoDate = (TextView) v.findViewById(R.id.repo_date);
+            repoName = v.findViewById(R.id.repo_name);
+            repoDesc = v.findViewById(R.id.repo_desc);
+            repoDate = v.findViewById(R.id.repo_date);
+        }
+    }
+
+    class RepositoryClickListener implements View.OnClickListener {
+
+        private final Repository repository;
+
+        RepositoryClickListener(Repository repository) {
+            this.repository = repository;
+        }
+
+        @Override
+        public void onClick(View v) {
+            repositoryListener.onSelectRepository(repository);
         }
     }
 }

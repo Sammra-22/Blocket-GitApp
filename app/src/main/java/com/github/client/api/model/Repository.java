@@ -33,7 +33,7 @@ public class Repository {
     String language;
     String size;
 
-    public Repository(String fullName){
+    public Repository(String fullName) {
         this.fullName = fullName;
     }
 

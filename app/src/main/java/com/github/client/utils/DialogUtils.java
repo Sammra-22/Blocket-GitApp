@@ -2,7 +2,6 @@ package com.github.client.utils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.support.annotation.IdRes;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 

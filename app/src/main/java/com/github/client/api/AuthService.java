@@ -4,11 +4,12 @@ import com.github.client.api.model.AuthQuery;
 import com.github.client.api.model.AuthToken;
 import com.github.client.api.model.User;
 
+import io.reactivex.Single;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import rx.Single;
+
 
 
 /**

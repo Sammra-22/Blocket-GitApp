@@ -1,9 +1,6 @@
 package com.github.client.account;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
-import com.TestUtils;
+import com.github.client.TestUtils;
 import com.github.client.api.AccountService;
 import com.github.client.api.model.Repository;
 import com.github.client.storage.Storage;
@@ -12,16 +9,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 
+import io.reactivex.Single;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
-import rx.Single;
 
+import static org.mockito.ArgumentMatchers.anyListOf;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -30,12 +28,6 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class AccountPresenterTest {
 
-    @Mock
-    private
-    Context mockContext;
-    @Mock
-    private
-    SharedPreferences mockSharedPrefs;
     @Mock
     private
     AccountService mockAccountService;
@@ -51,7 +43,7 @@ public class AccountPresenterTest {
 
     @Before
     public void setup() {
-        when(mockContext.getSharedPreferences(anyString(), anyInt())).thenReturn(mockSharedPrefs);
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(__ -> Schedulers.trampoline());
         presenter = new AccountPresenter(mockView, mockAccountService, mockStorage);
     }
 

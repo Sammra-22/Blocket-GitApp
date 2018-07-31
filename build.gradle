@@ -29,9 +29,11 @@ task clean(type: Delete) {
 }
 
 ext {
-    retrofitVersion = '2.1.0'
+    retrofitVersion = '2.3.0'
     gsonVersion = '2.8.0'
     okhttpLoggingVersion = '3.9.0'
-    mockitoVersion = '1.10.19'
-    supportLibVersion = '25.4.0'
+    mockitoVersion = '2.10.0'
+    supportLibVersion = '27.1.1'
+    rxjava2Version = "2.1.14"
+    rxandroid2Version = "2.0.2"
 }

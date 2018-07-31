@@ -5,8 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.github.client.api.ApiManager;
-import com.github.client.storage.LocalStorage;
 import com.github.client.storage.Storage;
+import com.github.client.storage.StorageImpl;
 
 
 /**
@@ -23,10 +23,16 @@ public abstract class BaseActivity<Presenter extends PresenterBase> extends AppC
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        storage = new LocalStorage(this);
+        storage = new StorageImpl(this);
         apiManager = ApiManager.getInstance(storage);
         presenter = createPresenter();
         presenter.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        presenter.onPostCreate(savedInstanceState);
     }
 
     @Override

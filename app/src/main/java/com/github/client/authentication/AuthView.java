@@ -9,7 +9,9 @@ import com.github.client.api.model.User;
  */
 interface AuthView extends ViewBase {
 
-    void toggleSignInForm(boolean isVisible);
+    enum Screen{ PROGRESS, SIGN_IN, TWO_FACTOR_AUTH}
+
+    void toggleView(Screen screen);
 
     void showAlertForResponseCode(ErrorCode code);
 

@@ -33,7 +33,8 @@ public class Repository {
     String language;
     String size;
 
-    public Repository(String fullName) {
+    public Repository(String name, String fullName) {
+        this.name = name;
         this.fullName = fullName;
     }
 
@@ -96,9 +97,9 @@ public class Repository {
         details.add(new ItemDetail("Language: ", language));
         details.add(new ItemDetail("Desc: ", description));
         details.add(new ItemDetail("Access: ", ((isPrivate) ? "Private" : "Public")));
-        details.add(new ItemDetail("Created: ", createdAt.substring(0, 10)));
-        details.add(new ItemDetail("Updated: ", updatedAt.substring(0, 10)));
-        details.add(new ItemDetail("Pushed: ", pushedAt.substring(0, 10)));
+        details.add(new ItemDetail("Created: ", createdAt != null ? createdAt.substring(0, 10) : ""));
+        details.add(new ItemDetail("Updated: ", updatedAt != null ? updatedAt.substring(0, 10) : ""));
+        details.add(new ItemDetail("Pushed: ", pushedAt != null ? pushedAt.substring(0, 10) : ""));
         details.add(new ItemDetail("Git url: ", sshUrl));
         details.add(new ItemDetail("SSH url: ", sshUrl));
         details.add(new ItemDetail("Clone url: ", cloneUrl));

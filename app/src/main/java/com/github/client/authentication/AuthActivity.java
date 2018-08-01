@@ -32,7 +32,7 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
 
     @Override
     protected AuthPresenter createPresenter() {
-        return new AuthPresenter(this, apiManager.getAccountService(), storage);
+        return new AuthPresenter(this, apiManager.getAuthService(), storage);
     }
 
     @Override
@@ -40,10 +40,10 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
         getSupportActionBar().hide();
-        usernameEditText = (EditText) findViewById(R.id.username);
-        passwordEditText = (EditText) findViewById(R.id.password);
-        privateAccessBox = (CheckBox) findViewById(R.id.access_private);
-        codeEditText = (EditText) findViewById(R.id.auth_code);
+        usernameEditText = findViewById(R.id.username);
+        passwordEditText = findViewById(R.id.password);
+        privateAccessBox = findViewById(R.id.access_private);
+        codeEditText = findViewById(R.id.auth_code);
         signInForm = findViewById(R.id.login_form);
         codeForm = findViewById(R.id.two_factor_auth_form);
         progress = findViewById(R.id.login_progress);

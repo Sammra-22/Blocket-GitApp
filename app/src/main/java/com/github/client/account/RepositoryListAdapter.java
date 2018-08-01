@@ -1,5 +1,6 @@
 package com.github.client.account;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,7 @@ public class RepositoryListAdapter extends RecyclerView.Adapter<RepositoryListAd
         this.repositoryList = repoList;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.repo_row, parent, false);
@@ -41,7 +43,7 @@ public class RepositoryListAdapter extends RecyclerView.Adapter<RepositoryListAd
         final Repository repo = repositoryList.get(position);
         holder.repoName.setText(repo.getName());
         holder.repoDesc.setText(repo.getDescription());
-        holder.repoDate.setText(repo.getCreatedAt().substring(0, 10));
+        holder.repoDate.setText(repo.getCreatedAt() != null ? repo.getCreatedAt().substring(0, 10) : "");
         holder.itemView.setOnClickListener(v -> repositoryListener.onSelectRepository(repo));
     }
 
@@ -62,20 +64,6 @@ public class RepositoryListAdapter extends RecyclerView.Adapter<RepositoryListAd
             repoName = v.findViewById(R.id.repo_name);
             repoDesc = v.findViewById(R.id.repo_desc);
             repoDate = v.findViewById(R.id.repo_date);
-        }
-    }
-
-    class RepositoryClickListener implements View.OnClickListener {
-
-        private final Repository repository;
-
-        RepositoryClickListener(Repository repository) {
-            this.repository = repository;
-        }
-
-        @Override
-        public void onClick(View v) {
-            repositoryListener.onSelectRepository(repository);
         }
     }
 }

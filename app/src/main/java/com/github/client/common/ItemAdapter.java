@@ -44,8 +44,8 @@ public class ItemAdapter extends ArrayAdapter<ItemDetail> {
             LayoutInflater inflater = LayoutInflater.from(context);
             row = inflater.inflate(R.layout.dialog_row, parent, false);
             holder = new ViewHolder();
-            holder.textViewLabel = (TextView) row.findViewById(R.id.label);
-            holder.textViewValue = (TextView) row.findViewById(R.id.value);
+            holder.textViewLabel = row.findViewById(R.id.label);
+            holder.textViewValue = row.findViewById(R.id.value);
             row.setTag(holder);
         } else {
             holder = (ViewHolder) row.getTag();

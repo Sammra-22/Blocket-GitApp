@@ -1,5 +1,7 @@
 package com.github.client.api;
 
+import android.support.annotation.VisibleForTesting;
+
 import com.github.client.api.network.HttpHeadersInterceptor;
 import com.github.client.storage.Storage;
 import com.github.client.utils.Global;
@@ -10,7 +12,6 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiManager {
@@ -18,6 +19,9 @@ public class ApiManager {
     private static ApiManager instance;
     private Retrofit retrofit;
     private Storage storage;
+
+    private AccountService accountService;
+    private AuthService authService;
 
     private ApiManager(Storage storage) {
         this.storage = storage;
@@ -31,12 +35,28 @@ public class ApiManager {
         return instance;
     }
 
-    public AuthService getAccountService() {
-        return retrofit.create(AuthService.class);
+    public AuthService getAuthService() {
+        if (authService == null) {
+            authService = retrofit.create(AuthService.class);
+        }
+        return authService;
     }
 
-    public AccountService getRepositoryService() {
-        return retrofit.create(AccountService.class);
+    @VisibleForTesting
+    public void setAuthService(AuthService authService) {
+        this.authService = authService;
+    }
+
+    public AccountService getAccountService() {
+        if (accountService == null) {
+            accountService = retrofit.create(AccountService.class);
+        }
+        return accountService;
+    }
+
+    @VisibleForTesting
+    public void setAccountService(AccountService accountService) {
+        this.accountService = accountService;
     }
 
     private Retrofit setupRetrofit() {

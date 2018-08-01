@@ -39,7 +39,7 @@ public class AccountActivity extends BaseActivity<AccountPresenter> implements A
 
     @Override
     protected AccountPresenter createPresenter() {
-        return new AccountPresenter(this, apiManager.getRepositoryService(), storage);
+        return new AccountPresenter(this, apiManager.getAccountService(), storage);
     }
 
     @Override
@@ -63,6 +63,8 @@ public class AccountActivity extends BaseActivity<AccountPresenter> implements A
                 name.setText(user.getName());
                 mail.setText(user.getEmail());
             }
+        } else {
+            finish();
         }
 
         setupActionButtons();
@@ -148,6 +150,4 @@ public class AccountActivity extends BaseActivity<AccountPresenter> implements A
         int id = item.getItemId();
         return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
-
-
 }

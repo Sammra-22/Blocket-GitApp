@@ -15,8 +15,8 @@ import retrofit2.Response;
 
 class AccountPresenter extends PresenterBase<AccountView> {
 
-    private final Storage dataStorage;
     private final AccountService accountService;
+    private final Storage dataStorage;
     private CompositeDisposable compositeDisposable;
 
     AccountPresenter(AccountView v, AccountService accountService, Storage dataStorage) {
